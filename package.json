@@ -1,0 +1,25 @@
+{
+  "name": "ecommerceapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seller": "npm start --prefix seller",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run seller\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "git-filter-repo": "^0.0.30",
+    "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
