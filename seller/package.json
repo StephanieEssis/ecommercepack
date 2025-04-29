@@ -8,7 +8,7 @@
     "start": "vite",
     "lint": "eslint .",
     "preview": "vite preview",
-    "vercel-build": "next build && npm install"
+    "vercel-build": "vercel build && npm install"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.7.0",
