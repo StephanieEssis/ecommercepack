@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // <-- Ajouter cette ligne
 
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -7,14 +7,8 @@ const productSchema = new mongoose.Schema({
     image: { type: String, required: true },
     category: { 
         type: String, 
-        enum: ['electronics', 'clothing' ],  // Liste des catégories autorisées
         required: true 
     }
-    // ,
-    // createdAt: { 
-    //     type: Date, 
-    //     default: Date.now 
-    // },
 });
 
 const Product = mongoose.model('Product', productSchema);

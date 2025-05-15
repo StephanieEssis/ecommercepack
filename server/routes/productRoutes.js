@@ -1,49 +1,65 @@
 const express = require('express');
-const Product = require('./models/product'); // Assure-toi que ce chemin est correct
+const mongoose = require('mongoose');
+const Product = require('./models/product'); // Vérifie que ce chemin est correct
 const router = express.Router();
 
-// Créer un produit
+// 🔹 Créer un produit
 router.post('/', async (req, res) => {
-    try {
-        const { name, description, price, image, category } = req.body;
-        const product = new Product({ name, description, price, image, category });
-        await product.save();
-        res.status(201).json(product);
-    } catch (err) {
-        res.status(400).json({ message: 'Error creating product' });
+  try {
+    const { name, description, price, image, category } = req.body;
+
+    // Vérification basique
+    if (!name || !description || !price || !image || !category) {
+      return res.status(400).json({ message: 'Tous les champs sont requis.' });
     }
+
+    const product = new Product({ name, description, price, image, category });
+    await product.save();
+
+    res.status(201).json(product);
+  } catch (err) {
+    console.error('Erreur création produit :', err);
+    res.status(400).json({ message: 'Erreur lors de la création du produit.' });
+  }
 });
 
-// Récupérer tous les produits ou filtrer par catégorie
+// 🔹 Récupérer tous les produits ou filtrer par catégorie
 router.get('/', async (req, res) => {
-    const category = req.query.category;  // Récupérer la catégorie de la requête (si elle existe)
-    
-    try {
-        let products;
-        if (category) {
-            products = await Product.find({ category: category });
-        } else {
-            products = await Product.find();
-        }
-        res.json(products); // Retourner tous les produits
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching products' });
-    }
+  const { category } = req.query;
+
+  try {
+    const products = category
+      ? await Product.find({ category })
+      : await Product.find();
+
+    res.status(200).json(products);
+  } catch (err) {
+    console.error('Erreur récupération produits :', err);
+    res.status(500).json({ message: 'Erreur lors de la récupération des produits.' });
+  }
 });
 
-// Récupérer un produit par ID (fonction "Voir plus")
+// 🔹 Récupérer un produit par ID
 router.get('/:id', async (req, res) => {
-    const { id } = req.params; // Récupérer l'ID du produit depuis l'URL
+  const { id } = req.params;
 
-    try {
-        const product = await Product.findById(id); // Trouver le produit par son ID
-        if (!product) {
-            return res.status(404).json({ message: 'Produit non trouvé' }); // Si le produit n'existe pas
-        }
-        res.json(product); // Retourner les détails du produit
-    } catch (err) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du produit' });
+  // ✅ Vérification de l'ID Mongo valide
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'ID invalide.' });
+  }
+
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Produit non trouvé.' });
     }
+
+    res.status(200).json(product);
+  } catch (err) {
+    console.error('Erreur récupération produit par ID :', err);
+    res.status(500).json({ message: 'Erreur lors de la récupération du produit.' });
+  }
 });
 
 module.exports = router;

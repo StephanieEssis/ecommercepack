@@ -1,6 +1,6 @@
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const Cart = require('../models/Cart');
+const Cart = require('../models/cart');
 const { protect } = require('./authRoutes');
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.post('/checkout', protect, async (req, res) => {
         // Créer un paiement avec Stripe
         const paymentIntent = await stripe.paymentIntents.create({
             amount: totalAmount * 100, // Montant en centimes
-            currency: 'usd', // Ou la devise de ton choix
+            currency: 'FCFA', // Ou la devise de ton choix
         });
 
         // Retourner le client secret nécessaire à la frontend pour compléter le paiement

@@ -13,6 +13,22 @@ const Home = () => {
                     Bienvenue sur notre application E-shop
                 </h1>
             </div>
+            {/* <div className="relative z-10 flex items-center justify-center min-h-screen bg-black bg-opacity-50">
+            <Image 
+          src="/images/cv_1.jpg" 
+          alt="Photo de profil" 
+          width={200} 
+          height={200} 
+          className="rounded-full"
+        />,
+           <Image 
+          src="/images/cv_1.jpg" 
+          alt="Photo de profil" 
+          width={200} 
+          height={200} 
+          className="rounded-full"
+        />
+            </div> */}
         </div>
     );
 };

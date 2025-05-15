@@ -18,7 +18,7 @@ import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 
 // Charger Stripe avec la clé publique
 
-const stripePromise = loadStripe("import.meta.env.VITE_STRIPE_PUBLIC_KEY"); // Ta clé publique Stripe
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY); // Ta clé publique Stripe
 
 const App = () => {
   return (

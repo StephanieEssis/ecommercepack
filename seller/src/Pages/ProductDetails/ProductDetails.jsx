@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../../utils/axios'; // Assure-toi que ce fichier est bien configuré
+import axios from '../../utils/axios';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice'; // ✅ Import de Redux
+import { addToCart } from '../../redux/cartSlice';
+import { loadStripe } from '@stripe/stripe-js';
+
+// ✅ Charger Stripe en dehors du composant
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const ProductDetails = () => {
-  const { productId } = useParams(); // Utilisation du hook useParams pour récupérer l'ID du produit
+  const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null); // Nouveau state pour l'erreur
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        // Remarque : Assure-toi que l'URL d'API est correcte
         const res = await axios.get(`/products/${productId}`);
         if (res.data) {
-          setProduct(res.data); // On met à jour l'état avec les données du produit
+          setProduct(res.data);
         } else {
           setError("Produit non trouvé.");
         }
       } catch (error) {
         setError("Erreur lors de la récupération du produit.");
-        console.error(error);
+        console.error("Erreur API : ", error.response?.data || error.message);
       }
     };
 
-    fetchProductDetails(); // On lance la récupération des données au chargement
+    fetchProductDetails();
   }, [productId]);
 
   if (error) {
